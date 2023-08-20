@@ -92,6 +92,8 @@ class Shows(db.Model):
       return f'<Show {self.id}, Venue {self.venue_id}, Artist {self.artist_id}, Start Time {self.start_time}>'
 
 app.app_context().push()
+#To test with data sample then uncomment db.drop_all() and line 601 'insert_data_sample()'
+#db.drop_all()
 db.create_all()
 #----------------------------------------------------------------------------#
 # Filters.
@@ -595,7 +597,8 @@ if not app.debug:
 
 # Default port:
 if __name__ == '__main__':
-    insert_data_sample()
+    #To run with data sample, please uncomment insert_data_sample().
+    # insert_data_sample()
     app.run()
 
 # Or specify port manually:

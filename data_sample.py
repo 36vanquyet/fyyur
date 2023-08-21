@@ -1,3 +1,5 @@
+from Models import db, Venue, Artist, Shows
+
 venues = [
   {
     "id": 1,
@@ -105,3 +107,40 @@ shows= [
     "start_time": "2035-04-15T20:00:00.000Z"
   }
 ]
+
+def insert_data_sample():
+  # Insert venues sample
+  for venue_data in venues:
+    id = venue_data.get('id')
+    query_venue = Venue.query.filter_by(id=id).first()
+    if query_venue is not None:
+      for key, value in venue_data.items():
+        setattr(query_venue, key, value)
+    else:
+      new_venue = Venue(**venue_data)
+      db.session.add(new_venue)
+  
+  # Insert artists sample
+  for artist_data in artists:
+    id = artist_data.get('id')
+    query_artist = Artist.query.filter_by(id=id).first()
+    if query_artist is not None:
+      for key, value in artist_data.items():
+        setattr(query_artist, key, value)
+    else:
+      new_artist = Artist(**artist_data)
+      db.session.add(new_artist)
+
+  # Commit to save the changes to db
+  db.session.commit()
+  
+  # Insert shows sample
+  for show_data in shows:
+    query_show = Shows.query.filter_by(venue_id=show_data.get('venue_id'), 
+                                       artist_id=show_data.get('artist_id'),
+                                       start_time=show_data.get('start_time')).first()
+    if query_show is None:
+      new_show = Shows(**show_data)
+      db.session.add(new_show)
+      # Commit to save the changes to db
+      db.session.commit()
